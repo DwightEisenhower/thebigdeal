@@ -1,12 +1,13 @@
-------------------------------------------------------------------------
-This is the project README file. Here, you should describe your project.
-Tell the reader (someone who does not know anything about this project)
-all he/she needs to know. The comments should usually include at least:
-------------------------------------------------------------------------
+PROJECT TITLE: ?
+PURPOSE OF PROJECT: ?
+DATE: 22 February 2018
+AUTHOR: Danylo Mirin
 
-PROJECT TITLE:
-PURPOSE OF PROJECT:
-VERSION or DATE:
-HOW TO START THIS PROJECT:
-AUTHORS:
-USER INSTRUCTIONS:
+POTENTIAL TOPICS:
+    - Percolation w/ reading colors --> IRL applications?
+    - Server side stuff (Have a program connect, read, analyze, write to site)
+        - Maybe an IMS
+        - Built-in encryption based on what I already have
+    - Menus (finish the Encryptor's menu)
+        - Could be merged together with the JAR working thing
+    - JAR files (Make a menu jar file that can work with other jars)
