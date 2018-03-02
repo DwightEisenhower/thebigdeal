@@ -1,33 +1,37 @@
-
+import java.util.*;
+import java.io.*;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
 /**
- * Write a description of class Menu here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * Time to screw around.
  */
-public class Menu
-{
-    // instance variables - replace the example below with your own
-    private int x;
-
-    /**
-     * Constructor for objects of class Menu
-     */
-    public Menu()
-    {
-        // initialise instance variables
-        x = 0;
-    }
-
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
+public class Menu {
+    private static JFrame program = new JFrame("Encryptor");
+    public static void main() {
+        JPanel one = new JPanel();
+        JPanel two = new JPanel();
+        Button a = new Button("Option A");
+        Button b = new Button("Option B");
+        a.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(new JFrame(), "BOO!");
+                JOptionPane.showConfirmDialog(new JFrame(), "Join the Student Party?");
+            }
+        });
+        b.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                String in = JOptionPane.showInputDialog(new JFrame(), "Gimme something");
+                System.out.println(in);
+            }
+        });
+        CardLayout layout = new CardLayout();
+        program.setLayout(layout);
+        program.setLocation(600,600);
+        program.setSize(200,50);
+        program.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        program.add(a);
+        program.add(b);
+        program.show();
     }
 }

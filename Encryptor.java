@@ -21,7 +21,7 @@ import java.io.*;
  * and encryption can be changed again
  * If the conversion file is empty/nonexistent or after initialisation it is found that not all
  * characters are present, it will be rewritten. This WILL screw with decryption on the other
- * end! You, as a responsible user, will have to pass on the encrypted table to your partner
+ * end! You will have to pass on the key to your partner (l2n.enc)
  */
 public class Encryptor {
     private HashMap<String, String> alphabet;
@@ -134,8 +134,10 @@ public class Encryptor {
     private void readFromFile() throws FileNotFoundException, IOException {
         reader = new BufferedReader(new FileReader(convFile));
         String line;
-        while( (line = reader.readLine()) != null)
+        while( (line = reader.readLine()) != null) {
+            line = ln(line,false);
             alphabet.put(line.substring(0,1), line.substring(2));
+        }
         reader.close();
     }
     
@@ -147,7 +149,7 @@ public class Encryptor {
         writer.close();
     }
     /**This method is gonna be ugly because I do not want to rely on external files*/
-    private String ln(String line,boolean encrypt) {
+    private String ln(String line, boolean encrypt) {
         String answer = "";
         HashMap<String, Integer> map = new HashMap<>();
         map.put("a",34);
@@ -216,7 +218,12 @@ public class Encryptor {
         if(encrypt)
             for(int i = 0; i < line.length(); i++)
                 answer += map.get(line.substring(i,i+1));
-        return null;
+        else
+            for(int i = 0; i < line.length(); i+=2)
+                for(String key : map.keySet())
+                    if(map.get(key).equals(Integer.parseInt(line.substring(i,i+2))))
+                        answer += key;
+        return answer;
     }
     
     private void reportException(IOException ex) {
