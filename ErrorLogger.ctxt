@@ -1,10 +1,10 @@
 #BlueJ class context
 comment0.target=ErrorLogger
-comment0.text=\r\n\ @Author\ Danylo\ Mirin\r\n\ @Copyright\ 2018\r\n\ @Date\ 4/3/18\ (d/m/y)\r\n\ @Version\ 1\r\n\ @Purpose\:\ to\ escape\ the\ need\ to\ write\ the\ same\ error\ codes\ everywhere\r\n
+comment0.text=\n\ @Author\ Danylo\ Mirin\n\ @Copyright\ 2018\n\ @Date\ 4/3/18\ (d/m/y)\n\ @Version\ 1\n\ @Purpose\:\ to\ escape\ the\ need\ to\ write\ the\ same\ error\ codes\ everywhere\n
 comment1.params=
 comment1.target=ErrorLogger()
-comment2.params=
-comment2.target=void\ log()
-comment3.params=e
-comment3.target=void\ addException(java.lang.Exception)
+comment2.params=e\ code
+comment2.target=void\ add(java.lang.Exception,\ int)
+comment3.params=
+comment3.target=void\ log()
 numComments=4

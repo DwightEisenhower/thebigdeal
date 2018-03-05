@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import java.util.regex.*;
 /**
  * Encryption
  * @Author: Danylo Mirin
@@ -31,7 +32,7 @@ public class Encryptor {
     private BufferedWriter writer;
     private File convFile = new File("l2n.enc");
     private File log = new File("log.txt");
-    
+    private ErrorLogger el = new ErrorLogger();
     public Encryptor() {
         if(!convFile.canRead() && !convFile.canWrite())
             System.exit(1);
@@ -45,8 +46,8 @@ public class Encryptor {
                     generateNewValues();
                     writeToFile();
                 } catch(IOException ex) {
-                    reportException(ex);
-                    System.exit(2);
+                    el.add(ex,1);
+                    System.out.println("The program has been unable to set up vital files.\nDo you wish to continue with a broken program or restart?\n(The probable cause is lack of writing/reading access)");
                 }
             } else {
                 try {
@@ -94,6 +95,21 @@ public class Encryptor {
         }
     }
     
+    public static void main() {
+        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+        boolean end = false;
+        System.out.println("Input reading started.");
+        while(!end) {
+            try {
+                String input = console.readLine();
+                Pattern pat = Pattern.compile("?i\\bencrypt\b\\s+\\b(\\w");
+            } catch(IOException ex) {
+                System.out.println("wth just happened here");
+                System.exit(4);
+            }
+        }
+    }
+    
     /*#Encryption*/
     public String encrypt(String message) {
         String scrambled = "";
@@ -101,21 +117,6 @@ public class Encryptor {
             scrambled += alphabet.get(message.substring(i,i+1));
         return scrambled;
     }
-    
-    public String decrypt(String scrambled) {
-        String message = "";
-        //should always be false because every encryption value is 10 chars long
-        if(scrambled.length() % 10 != 0)
-            System.exit(5);
-        for(int i = 0; i < scrambled.length(); i+= 10) {
-            String expression = scrambled.substring(i,i+10);
-            for(String s : alphabet.keySet())
-                if(alphabet.get(s).equals(expression))
-                    message += s;
-        }
-        return message;
-    }
-    
     public void generateNewValues() {
         String[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890~!@#$%^&*()-_=+{}[]|;:'\",.<>/?".split("");
         for(String s : chars) {
@@ -133,6 +134,20 @@ public class Encryptor {
         return key;
     }
     
+    public String decrypt(String scrambled) {
+        String message = "";
+        //should always be false because every encryption value is 10 chars long
+        if(scrambled.length() % 10 != 0)
+            System.exit(5);
+        for(int i = 0; i < scrambled.length(); i+= 10) {
+            String expression = scrambled.substring(i,i+10);
+            for(String s : alphabet.keySet())
+                if(alphabet.get(s).equals(expression))
+                    message += s;
+        }
+        return message;
+    }
+    
     private void readFromFile() throws FileNotFoundException, IOException {
         reader = new BufferedReader(new FileReader(convFile));
         String line;
@@ -146,12 +161,12 @@ public class Encryptor {
     private void writeToFile() throws IOException {
         writer = new BufferedWriter(new FileWriter(convFile));
         for(String k : alphabet.keySet())
-            writer.write(ln(k+"|"+alphabet.get(k), true));
+            writer.write(Encryptor.ln(k+"|"+alphabet.get(k), true));
         writer.flush();
         writer.close();
     }
     /**This method is gonna be ugly because I do not want to rely on external files*/
-    public String ln(String line, boolean encrypt) {
+    public static String ln(String line, boolean encrypt) {
         String answer = "";
         HashMap<String, Integer> map = new HashMap<>();
         map.put("a",34);

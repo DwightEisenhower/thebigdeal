@@ -6,42 +6,70 @@ import java.util.*;
  * @Copyright 2018
  * @Date 4/3/18 (d/m/y)
  * @Version 1
- * @Error codes:
- * 1 = 
  */
 public class PasswordManager {
     //There are 3 bits to hold: website/company, username, password.
     //Cannot do that conveniently with just a hashmap
     private HashMap<String, Account> map;
     private File list = new File("list.pw");
+    private ErrorLogger el = new ErrorLogger();
     public PasswordManager() {
         map = new HashMap<>();
         try {
             if(!list.exists())
-                list.createNewFile();
+                list.createNewFile();//may have issues b/c of writing access
             else {
                 readFromFile();
             }
         } catch(FileNotFoundException ex) {
-            ex.printStackTrace();
+            el.add(ex, 3);
         } catch(IOException ex) {
-            
+            el.add(ex, 1);
         }
+    }
+    
+    public static void main() {
+        
     }
     
     public boolean addAccount(String site, String name, String password) {
         Account temp = map.putIfAbsent(site, new Account(name,password));
-        if(temp == null)
-            return true;
-        else
-            return false;
+        return temp == null;
     }
     
-    public void readFromFile() throws FileNotFoundException {
-        BufferedReader reader = new BufferedReader(new FileReader(list));
+    public Account getCredentials(String website) {
+        
+    }
+    
+    public void readFromFile() {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(list));
+            String line;
+            while( (line = reader.readLine()) != null) {
+                line = Encryptor.ln(line,false);
+            }
+        } catch(FileNotFoundException ex) {
+            el.add(ex, 3);
+        } catch(IOException x) {
+            el.add(x, 2);
+        }
     }
     
     public boolean writeToFile() {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(list));
+            for(String s : map.keySet()) {
+                String line = s+" - "+map.get(s);
+                writer.write(line);
+            }
+            writer.flush();
+            writer.close();
+            return true;
+        } catch(FileNotFoundException ex) {
+            el.add(ex, 3);
+        } catch(IOException ex) {
+            el.add(ex, 1);
+        }
         return false;
     }
     public class Account {

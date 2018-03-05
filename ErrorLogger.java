@@ -18,7 +18,19 @@ public class ErrorLogger {
         text = new ArrayList<>();
         codes = new HashMap<>();
         codes.put(1,"Writing access denied");
-        
+        codes.put(2,"Reading access denied");
+        codes.put(3,"File not present");
+        codes.put(4,"What the hell? (unknown error)");
+        for(Integer i : codes.keySet())
+            text.add(i+codes.get(i));
+        text.add("\n\n");
+    }
+    
+    public void add(Exception e, int code) {
+        text.add("code "+code+e.getClass());
+        StackTraceElement[] elements = e.getStackTrace();
+        for(StackTraceElement el : elements)
+            text.add(el.toString());
     }
     
     public void log() {
@@ -38,9 +50,5 @@ public class ErrorLogger {
             JOptionPane.showMessageDialog(new JFrame(), "Read & write access denied");
         }
         //Since this is a log and not a crucial step of the application, it is not necessary to autoexit
-    }
-    
-    public static void addException(Exception e) {
-        
     }
 }
