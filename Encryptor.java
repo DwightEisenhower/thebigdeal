@@ -3,6 +3,7 @@ import java.io.*;
 /**
  * Encryption
  * @Author: Danylo Mirin
+ * @Copyright 2018
  * @Date: 27 February 2018
  * @Version: 5
  * @Error Codes:
@@ -21,7 +22,8 @@ import java.io.*;
  * and encryption can be changed again
  * If the conversion file is empty/nonexistent or after initialisation it is found that not all
  * characters are present, it will be rewritten. This WILL screw with decryption on the other
- * end! You will have to pass on the key to your partner (l2n.enc)
+ * end! You will have to pass on the key to your partner or decryption will fail and give you 
+ * gibberish answers. (encryption stored in l2n.enc)
  */
 public class Encryptor {
     private HashMap<String, String> alphabet;
@@ -149,7 +151,7 @@ public class Encryptor {
         writer.close();
     }
     /**This method is gonna be ugly because I do not want to rely on external files*/
-    private String ln(String line, boolean encrypt) {
+    public String ln(String line, boolean encrypt) {
         String answer = "";
         HashMap<String, Integer> map = new HashMap<>();
         map.put("a",34);
