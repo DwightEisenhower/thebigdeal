@@ -27,43 +27,45 @@ import java.util.regex.*;
  * gibberish answers. (encryption stored in l2n.enc)
  */
 public class Encryptor {
-    private HashMap<String, String> alphabet;
+    private HashMap<String, String> alphabet = new HashMap<>();
     private BufferedReader reader;
     private BufferedWriter writer;
     private File convFile = new File("l2n.enc");
     private File log = new File("log.txt");
-    private ErrorLogger el = new ErrorLogger();
+    public final ErrorLogger el = new ErrorLogger();
     public Encryptor() {
-        if(!convFile.canRead() && !convFile.canWrite())
-            System.exit(1);
-        else {
+        //if(!convFile.canRead() && !convFile.canWrite()) {
+            //System.out.println("Cannot read or write");
+            //System.exit(1);
+        //} else {
             if(!convFile.exists()) {
-                convFile.mkdirs();
                 try {
                     if(!log.exists())
                         log.createNewFile();
                     convFile.createNewFile();
                     generateNewValues();
                     writeToFile();
+                    System.out.println("File created, values generated and written.");
                 } catch(IOException ex) {
                     el.add(ex,1);
-                    System.out.println("The program has been unable to set up vital files.\nDo you wish to continue with a broken program or restart?\n(The probable cause is lack of writing/reading access)");
+                    System.out.println("The program has been unable to set up vital files.\nDo you wish to continue with a broken program or restart?\n(The probable cause of error is lack of writing/reading access)");
                 }
             } else {
                 try {
                     if(!log.exists())
                         log.createNewFile();
                     readFromFile();
+                    System.out.println("Values read from file and set up.");
                 } catch(FileNotFoundException ex) {
                     //this should already be taken care of by the "if" part of this statement but just in case...
-                    reportException(ex);
+                    el.add(ex, 3);
                     System.exit(3);
                 } catch(IOException ex) {
-                    reportException(ex);
+                    el.add(ex, 2);
                     System.exit(4);
                 }
             }
-        }
+        //}
     }
     
     //This constructor simply saves the computer the trouble of making up new values, everything else remains the same
@@ -77,7 +79,7 @@ public class Encryptor {
                 convFile.createNewFile();
                 writeToFile();
             } catch(IOException ex) {
-                reportException(ex);
+                el.add(ex, 1);
                 System.exit(2);
             }
         } else {
@@ -86,10 +88,10 @@ public class Encryptor {
                     log.createNewFile();
                 readFromFile();
             } catch(FileNotFoundException ex) {
-                reportException(ex);
+                el.add(ex, 3);
                 System.exit(3);
             } catch(IOException ex) {
-                reportException(ex);
+                el.add(ex, 2);
                 System.exit(4);
             }
         }
@@ -100,14 +102,34 @@ public class Encryptor {
         boolean end = false;
         System.out.println("Input reading started.");
         while(!end) {
+            Encryptor e = new Encryptor();
             try {
                 String input = console.readLine();
-                Pattern pat = Pattern.compile("?i\\bencrypt\b\\s+\\b(\\w");
+                if(input.equals("end") || input.equals("stop")) {
+                    end = true;
+                    break;
+                }
+                Matcher a = Pattern.compile("\\bencrypt\b\\s+\\b(\\.+)\\b").matcher(input);
+                Matcher b = Pattern.compile("\\bdecrypt\b\\s+\\b((\\w)|(\\d))+\\b").matcher(input);
+                if(a.matches()) {
+                    System.out.println("Matched, encrypting...");
+                    System.out.println(e.encrypt(a.group(1)));
+                }
+                if(b.matches()) {
+                    System.out.println("Matched, decrypting...");
+                    String s = "";
+                    for(int i = 1; i < b.groupCount(); i++)
+                        s += b.group(i);
+                    System.out.println(e.decrypt(s));
+                }
+                e.el.log();
             } catch(IOException ex) {
                 System.out.println("wth just happened here");
+                e.el.log();
                 System.exit(4);
             }
         }
+        System.out.println("Program ended successfully.");
     }
     
     /*#Encryption*/
@@ -120,7 +142,8 @@ public class Encryptor {
     public void generateNewValues() {
         String[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890~!@#$%^&*()-_=+{}[]|;:'\",.<>/?".split("");
         for(String s : chars) {
-            String value = keyGen();
+            String value = keyGen();//generates a random 10-character key for encryption
+            System.out.println(s+", "+value);
             alphabet.put(s, value);
         }
     }
@@ -149,6 +172,7 @@ public class Encryptor {
     }
     
     private void readFromFile() throws FileNotFoundException, IOException {
+        System.out.println("Reading...");
         reader = new BufferedReader(new FileReader(convFile));
         String line;
         while( (line = reader.readLine()) != null) {
@@ -156,14 +180,18 @@ public class Encryptor {
             alphabet.put(line.substring(0,1), line.substring(2));
         }
         reader.close();
+        System.out.println("Reading finished, values set.");
     }
     
     private void writeToFile() throws IOException {
+        System.out.println("Writing...");
         writer = new BufferedWriter(new FileWriter(convFile));
+        System.out.println(alphabet.keySet());
         for(String k : alphabet.keySet())
             writer.write(Encryptor.ln(k+"|"+alphabet.get(k), true));
         writer.flush();
         writer.close();
+        System.out.println("Writing finished, check file.");
     }
     /**This method is gonna be ugly because I do not want to rely on external files*/
     public static String ln(String line, boolean encrypt) {
@@ -240,20 +268,7 @@ public class Encryptor {
                 for(String key : map.keySet())
                     if(map.get(key).equals(Integer.parseInt(line.substring(i,i+2))))
                         answer += key;
+        
         return answer;
-    }
-    
-    private void reportException(IOException ex) {
-        StackTraceElement[] info = ex.getStackTrace();
-        int i = 0;
-        try {
-            writer = new BufferedWriter(new FileWriter(log));
-            while(i < info.length)
-                writer.write(info[i].toString());
-            writer.flush();
-            writer.close();
-        } catch(IOException ioe) {
-            System.exit(2);
-        }
     }
 }

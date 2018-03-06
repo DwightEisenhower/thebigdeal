@@ -38,7 +38,7 @@ public class PasswordManager {
     }
     
     public Account getCredentials(String website) {
-        
+        return map.get(website);
     }
     
     public void readFromFile() {
@@ -59,7 +59,7 @@ public class PasswordManager {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(list));
             for(String s : map.keySet()) {
-                String line = s+" - "+map.get(s);
+                String line = s+" --> "+map.get(s);
                 writer.write(line);
             }
             writer.flush();
@@ -77,6 +77,10 @@ public class PasswordManager {
         public Account(String name, String password) {
             this.name = name;
             this.password = password;
+        }
+        
+        public String toString() {
+            return "username: "+name+"; password: "+password;
         }
     }
 }
