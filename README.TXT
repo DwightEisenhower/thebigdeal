@@ -1,5 +1,5 @@
-PROJECT TITLE: ?
-PURPOSE OF PROJECT: ?
+PROJECT TITLE: password manager
+PURPOSE OF PROJECT: design a free program to manage passwords
 DATE: 22 February 2018
 AUTHOR: Danylo Mirin
 
@@ -11,3 +11,8 @@ POTENTIAL TOPICS:
     - Menus (finish the Encryptor's menu)
         - Could be merged together with the JAR working thing
     - JAR files (Make a menu jar file that can work with other jars)
+
+STATUS:
+- Encryption works!
+- Error Logging works!
+- Password managment works!

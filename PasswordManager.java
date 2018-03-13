@@ -29,12 +29,16 @@ public class PasswordManager {
     }
     
     public static void main() {
-        
+        PasswordManager pw = new PasswordManager();
+        pw.run();
+    }
+    
+    public void run() {
+        System.out.println(getCredentials("gmail"));
     }
     
     public boolean addAccount(String site, String name, String password) {
-        Account temp = map.putIfAbsent(site, new Account(name,password));
-        return temp == null;
+        return map.putIfAbsent(site, new Account(name,password)) == null;
     }
     
     public Account getCredentials(String website) {
@@ -46,7 +50,10 @@ public class PasswordManager {
             BufferedReader reader = new BufferedReader(new FileReader(list));
             String line;
             while( (line = reader.readLine()) != null) {
-                line = Encryptor.ln(line,false);
+                //line = Encryptor.ln(line,false);
+                int arrow = line.indexOf("-->");
+                int semcol = line.indexOf("; ");
+                map.put(line.substring(0, arrow-1), new Account(line.substring(arrow+4, semcol), line.substring(semcol+2)));
             }
         } catch(FileNotFoundException ex) {
             el.add(ex, 3);
@@ -60,10 +67,12 @@ public class PasswordManager {
             BufferedWriter writer = new BufferedWriter(new FileWriter(list));
             for(String s : map.keySet()) {
                 String line = s+" --> "+map.get(s);
-                writer.write(line);
+                System.out.println(line);
+                writer.write(line+"\n");
             }
             writer.flush();
             writer.close();
+            System.out.println("Success, terminated");
             return true;
         } catch(FileNotFoundException ex) {
             el.add(ex, 3);
@@ -80,7 +89,7 @@ public class PasswordManager {
         }
         
         public String toString() {
-            return "username: "+name+"; password: "+password;
+            return name+"; "+password;
         }
     }
 }

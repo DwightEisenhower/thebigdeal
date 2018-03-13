@@ -1,13 +1,10 @@
 #BlueJ package file
-dependency1.from=PasswordManager
+dependency1.from=Encryptor
 dependency1.to=ErrorLogger
 dependency1.type=UsesDependency
 dependency2.from=PasswordManager
-dependency2.to=Encryptor
+dependency2.to=ErrorLogger
 dependency2.type=UsesDependency
-dependency3.from=Encryptor
-dependency3.to=ErrorLogger
-dependency3.type=UsesDependency
 editor.fx.0.height=722
 editor.fx.0.width=1121
 editor.fx.0.x=798
@@ -22,7 +19,7 @@ package.editor.x=0
 package.editor.y=557
 package.frame.height=442
 package.frame.width=589
-package.numDependencies=3
+package.numDependencies=2
 package.numTargets=4
 package.showExtends=true
 package.showUses=true

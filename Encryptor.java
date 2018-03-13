@@ -97,39 +97,44 @@ public class Encryptor {
         }
     }
     
-    public static void main() {
+    public void run() {
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
         boolean end = false;
         System.out.println("Input reading started.");
         while(!end) {
-            Encryptor e = new Encryptor();
             try {
                 String input = console.readLine();
                 if(input.equals("end") || input.equals("stop")) {
                     end = true;
                     break;
                 }
-                Matcher a = Pattern.compile("\\bencrypt\b\\s+\\b(\\.+)\\b").matcher(input);
-                Matcher b = Pattern.compile("\\bdecrypt\b\\s+\\b((\\w)|(\\d))+\\b").matcher(input);
-                if(a.matches()) {
+                if(input.equals("printall")) {
+                    for(String s : alphabet.keySet())
+                        System.out.println(s+" = "+alphabet.get(s));
+                }
+                Matcher a = Pattern.compile("\\bencrypt\\s\\b(.+)\\b").matcher(input);
+                Matcher b = Pattern.compile("\\bdecrypt\\s\\b(\\w+)\\b").matcher(input);
+                if(a.find()) {
                     System.out.println("Matched, encrypting...");
-                    System.out.println(e.encrypt(a.group(1)));
+                    System.out.println(encrypt(a.group(1)));
                 }
-                if(b.matches()) {
+                if(b.find()) {
                     System.out.println("Matched, decrypting...");
-                    String s = "";
-                    for(int i = 1; i < b.groupCount(); i++)
-                        s += b.group(i);
-                    System.out.println(e.decrypt(s));
+                    System.out.println(decrypt(b.group(1)));
                 }
-                e.el.log();
+                el.log();
             } catch(IOException ex) {
                 System.out.println("wth just happened here");
-                e.el.log();
+                el.log();
                 System.exit(4);
             }
         }
         System.out.println("Program ended successfully.");
+    }
+    
+    public static void main() {
+        Encryptor e = new Encryptor();
+        e.run();
     }
     
     /*#Encryption*/
@@ -176,7 +181,7 @@ public class Encryptor {
         reader = new BufferedReader(new FileReader(convFile));
         String line;
         while( (line = reader.readLine()) != null) {
-            line = ln(line,false);
+            //line = ln(line,false);
             alphabet.put(line.substring(0,1), line.substring(2));
         }
         reader.close();
@@ -186,9 +191,11 @@ public class Encryptor {
     private void writeToFile() throws IOException {
         System.out.println("Writing...");
         writer = new BufferedWriter(new FileWriter(convFile));
-        System.out.println(alphabet.keySet());
-        for(String k : alphabet.keySet())
-            writer.write(Encryptor.ln(k+"|"+alphabet.get(k), true));
+        for(String k : alphabet.keySet()) {
+            String s = k+"|"+alphabet.get(k);
+            System.out.println(s);
+            writer.write(s+"\n");
+        }
         writer.flush();
         writer.close();
         System.out.println("Writing finished, check file.");
