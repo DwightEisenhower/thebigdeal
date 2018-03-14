@@ -34,7 +34,7 @@ public class PasswordManager {
     }
     
     public void run() {
-        System.out.println(getCredentials("gmail"));
+        System.out.println(generatePassword(20,true));
     }
     
     public boolean addAccount(String site, String name, String password) {
@@ -43,6 +43,18 @@ public class PasswordManager {
     
     public Account getCredentials(String website) {
         return map.get(website);
+    }
+    
+    public String generatePassword(int length, boolean special) {
+        String[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~!@#$%^&*()_+-=[]{}|;:,.<>?/'".split("");
+        int upperBound; String pw = "";
+        if(special)
+            upperBound = chars.length;
+        else
+            upperBound = 26+26+10;
+        for(int i = 0; i < length; i++)
+            pw += chars[(int)(Math.random()*upperBound)];
+        return pw;
     }
     
     public void readFromFile() {

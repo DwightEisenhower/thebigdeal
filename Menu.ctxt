@@ -1,10 +1,13 @@
 #BlueJ class context
 comment0.target=Menu
-comment0.text=\r\n\ Time\ to\ screw\ around.\r\n
-comment1.params=
-comment1.target=void\ main()
-comment2.params=e
-comment2.target=void\ actionPerformed(java.awt.event.ActionEvent)
-comment3.params=e
-comment3.target=void\ actionPerformed(java.awt.event.ActionEvent)
-numComments=4
+comment0.text=\n\ Time\ to\ screw\ around.\n
+comment1.params=pane
+comment1.target=void\ addComponentToPane(java.awt.Container)
+comment2.params=evt
+comment2.target=void\ itemStateChanged(java.awt.event.ItemEvent)
+comment3.params=
+comment3.target=void\ run()
+comment3.text=\n\ Create\ the\ GUI\ and\ show\ it.\ \ For\ thread\ safety,\n\ this\ method\ should\ be\ invoked\ from\ the\n\ event\ dispatch\ thread.\n
+comment4.params=args
+comment4.target=void\ main(java.lang.String[])
+numComments=5
