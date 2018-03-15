@@ -1,6 +1,5 @@
 import java.util.*;
 import java.io.*;
-import java.util.regex.*;
 /**
  * Encryption
  * @Author: Danylo Mirin
@@ -34,38 +33,26 @@ public class Encryptor {
     private File log = new File("log.txt");
     public final ErrorLogger el = new ErrorLogger();
     public Encryptor() {
-        //if(!convFile.canRead() && !convFile.canWrite()) {
-            //System.out.println("Cannot read or write");
-            //System.exit(1);
-        //} else {
-            if(!convFile.exists()) {
-                try {
-                    if(!log.exists())
-                        log.createNewFile();
-                    convFile.createNewFile();
-                    generateNewValues();
-                    writeToFile();
-                    System.out.println("File created, values generated and written.");
-                } catch(IOException ex) {
-                    el.add(ex,1);
-                    System.out.println("The program has been unable to set up vital files.\nDo you wish to continue with a broken program or restart?\n(The probable cause of error is lack of writing/reading access)");
-                }
-            } else {
-                try {
-                    if(!log.exists())
-                        log.createNewFile();
-                    readFromFile();
-                    System.out.println("Values read from file and set up.");
-                } catch(FileNotFoundException ex) {
-                    //this should already be taken care of by the "if" part of this statement but just in case...
-                    el.add(ex, 3);
-                    System.exit(3);
-                } catch(IOException ex) {
-                    el.add(ex, 2);
-                    System.exit(4);
-                }
+        if(!convFile.exists()) {
+            try {
+                if(!log.exists())
+                    log.createNewFile();
+                convFile.createNewFile();
+            } catch(IOException ex) {
+                el.add(ex,1);
             }
-        //}
+        } else {
+            try {
+                if(!log.exists())
+                    log.createNewFile();
+                readFromFile();
+            } catch(FileNotFoundException ex) {
+                //this should already be taken care of by the "if" part of this statement but just in case...
+                el.add(ex, 3);
+            } catch(IOException ex) {
+                el.add(ex, 2);
+            }
+        }
     }
     
     //This constructor simply saves the computer the trouble of making up new values, everything else remains the same
@@ -97,46 +84,6 @@ public class Encryptor {
         }
     }
     
-    public void run() {
-        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-        boolean end = false;
-        System.out.println("Input reading started.");
-        while(!end) {
-            try {
-                String input = console.readLine();
-                if(input.equals("end") || input.equals("stop")) {
-                    end = true;
-                    break;
-                }
-                if(input.equals("printall")) {
-                    for(String s : alphabet.keySet())
-                        System.out.println(s+" = "+alphabet.get(s));
-                }
-                Matcher a = Pattern.compile("\\bencrypt\\s\\b(.+)\\b").matcher(input);
-                Matcher b = Pattern.compile("\\bdecrypt\\s\\b(\\w+)\\b").matcher(input);
-                if(a.find()) {
-                    System.out.println("Matched, encrypting...");
-                    System.out.println(encrypt(a.group(1)));
-                }
-                if(b.find()) {
-                    System.out.println("Matched, decrypting...");
-                    System.out.println(decrypt(b.group(1)));
-                }
-                el.log();
-            } catch(IOException ex) {
-                System.out.println("wth just happened here");
-                el.log();
-                System.exit(4);
-            }
-        }
-        System.out.println("Program ended successfully.");
-    }
-    
-    public static void main() {
-        Encryptor e = new Encryptor();
-        e.run();
-    }
-    
     /*#Encryption*/
     public String encrypt(String message) {
         String scrambled = "";
@@ -150,6 +97,11 @@ public class Encryptor {
             String value = keyGen();//generates a random 10-character key for encryption
             System.out.println(s+", "+value);
             alphabet.put(s, value);
+        }
+        try{
+            writeToFile();
+        } catch(IOException ex) {
+            el.add(ex, 1);
         }
     }
     public String keyGen() {//In the EXTREMELY improbable event that keys are the same, just rerun the program. If that doesn't fix it...
@@ -177,7 +129,6 @@ public class Encryptor {
     }
     
     private void readFromFile() throws FileNotFoundException, IOException {
-        System.out.println("Reading...");
         reader = new BufferedReader(new FileReader(convFile));
         String line;
         while( (line = reader.readLine()) != null) {
@@ -185,11 +136,9 @@ public class Encryptor {
             alphabet.put(line.substring(0,1), line.substring(2));
         }
         reader.close();
-        System.out.println("Reading finished, values set.");
     }
     
     private void writeToFile() throws IOException {
-        System.out.println("Writing...");
         writer = new BufferedWriter(new FileWriter(convFile));
         for(String k : alphabet.keySet()) {
             String s = k+"|"+alphabet.get(k);
@@ -198,7 +147,6 @@ public class Encryptor {
         }
         writer.flush();
         writer.close();
-        System.out.println("Writing finished, check file.");
     }
     /**This method is gonna be ugly because I do not want to rely on external files*/
     public static String ln(String line, boolean encrypt) {
@@ -277,5 +225,9 @@ public class Encryptor {
                         answer += key;
         
         return answer;
+    }
+    
+    public boolean empty() {
+        return alphabet.isEmpty();
     }
 }
