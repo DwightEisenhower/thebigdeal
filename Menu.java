@@ -12,8 +12,8 @@ import javax.swing.*;
 public class Menu implements ItemListener {
     private Encryptor enc = new Encryptor();
     private PasswordManager pw = new PasswordManager();
+    public final ErrorLogger el = new ErrorLogger();
     
-    private JFrame frame = new JFrame("Encryptor");
     private JPanel cards;
     private final String BUTTONPANEL = "Encryption";
     private final String TEXTPANEL = "PasswordManager";
@@ -22,6 +22,10 @@ public class Menu implements ItemListener {
     private JTextField encinput = new JTextField("message...", 25);
     private JButton decrypt = new JButton("Decrypt");
     private JButton b = new JButton("Generate");
+    
+    private JButton add = new JButton("Add account");
+    private JTextField pwinput = new JTextField("",20);
+    private JButton search = new JButton("Search");
     
     private void addActionListeners() {
         encrypt.addActionListener(new ActionListener(){
@@ -40,11 +44,31 @@ public class Menu implements ItemListener {
         decrypt.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 String in = encinput.getText();
+                if(in.equals("message...") || in.equals(""))
+                    JOptionPane.showMessageDialog(new JFrame(),"Enter something first!");
+                else {
+                    if(!enc.empty())
+                        JOptionPane.showMessageDialog(new JFrame(), enc.decrypt(in));
+                    else
+                        JOptionPane.showMessageDialog(new JFrame(), "No conversion file found. If you are supposed to receive a file from a friend,\nclose the program, add the file to the folder with the program and\nrestart.\n\nIf you are not receiving a file for this from a friend, click generate and proceed.");
+                }
             }
         });
         b.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 enc.generateNewValues();
+                JOptionPane.showMessageDialog(new JFrame(), "Values generated.");
+            }
+        });
+        add.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                //make a new frame with 3 fields
+            }
+        });
+        search.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                String input = pwinput.getText();
+                JOptionPane.showMessageDialog(new JFrame(), pw.getCredentials(input));
             }
         });
     }
@@ -64,8 +88,11 @@ public class Menu implements ItemListener {
         card1.add(b);
         
         JPanel card2 = new JPanel();
-        card2.add(new JTextField("TextField", 20));
-        card2.add(new JButton("Go"));
+        card2.add(pwinput);
+        card2.add(add);
+        card2.add(search);
+        
+        addActionListeners();
         
         cards = new JPanel(new CardLayout());
         cards.add(card1, BUTTONPANEL);
@@ -81,18 +108,21 @@ public class Menu implements ItemListener {
     }
     
     private static void run() {
-        JFrame frame = new JFrame("CardLayoutDemo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Menu demo = new Menu();
-        demo.addComponentToPane(frame.getContentPane());
-        frame.pack();
-        frame.setVisible(true);
+        JFrame program = new JFrame("CardLayoutDemo");
+        Menu menu = new Menu();
+        program.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e) {
+                menu.el.log();
+            }
+        });
+        program.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menu.addComponentToPane(program.getContentPane());
+        program.pack();
+        program.setVisible(true);
     }
     
     public static void main(String[] args) {
-        /* Use an appropriate Look and Feel */
         try {
-            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
@@ -103,8 +133,6 @@ public class Menu implements ItemListener {
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
-        /* Turn off metal's use of bold fonts */
-        UIManager.put("swing.boldMetal", Boolean.FALSE);
         run();
     }
 }

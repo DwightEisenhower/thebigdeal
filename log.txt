@@ -1,0 +1,6 @@
+1 - Writing access denied
+2 - Reading access denied
+3 - File not present
+4 - What the hell? (unknown error)
+
+
