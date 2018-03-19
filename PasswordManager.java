@@ -34,7 +34,7 @@ public class PasswordManager {
     }
     
     public void run() {
-        System.out.println(generatePassword(20,true));
+        System.out.println(generatePassword(true));
     }
     
     public boolean addAccount(String site, String name, String password) {
@@ -45,14 +45,14 @@ public class PasswordManager {
         return map.get(website);
     }
     
-    public String generatePassword(int length, boolean special) {
+    public String generatePassword(boolean special) {
         String[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~!@#$%^&*()_+-=[]{}|;:,.<>?/'".split("");
         int upperBound; String pw = "";
         if(special)
             upperBound = chars.length;
         else
             upperBound = 26+26+10;
-        for(int i = 0; i < length; i++)
+        for(int i = 0; i < 12; i++)
             pw += chars[(int)(Math.random()*upperBound)];
         return pw;
     }

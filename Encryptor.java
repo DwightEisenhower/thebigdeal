@@ -84,6 +84,10 @@ public class Encryptor {
         }
     }
     
+    public static void main() {
+        System.out.println(Encryptor.ln("740403184938595",false));
+    }
+    
     /*#Encryption*/
     public String encrypt(String message) {
         String scrambled = "";
@@ -152,76 +156,106 @@ public class Encryptor {
     public static String ln(String line, boolean encrypt) {
         String answer = "";
         HashMap<String, Integer> map = new HashMap<>();
-        map.put("a",34);
-        map.put("b",12);
-        map.put("c",63);
-        map.put("d",23);
-        map.put("e",35);
-        map.put("f",15);
-        map.put("g",90);
-        map.put("h",91);
-        map.put("i",64);
-        map.put("j",85);
-        map.put("k",73);
-        map.put("l",42);
-        map.put("m",97);
-        map.put("n",86);
-        map.put("o",71);
-        map.put("p",72);
-        map.put("q",98);
-        map.put("r",79);
-        map.put("s",82);
-        map.put("t",59);
-        map.put("u",57);
-        map.put("v",41);
-        map.put("w",55);
-        map.put("x",53);
-        map.put("y",10);
-        map.put("z",26);
-        map.put("A",94);
-        map.put("B",81);
-        map.put("C",70);
-        map.put("D",31);
-        map.put("E",74);
-        map.put("F",51);
-        map.put("G",13);
-        map.put("H",50);
-        map.put("I",20);
-        map.put("J",62);
-        map.put("K",25);
-        map.put("L",60);
-        map.put("M",49);
-        map.put("N",46);
-        map.put("O",66);
-        map.put("P",61);
-        map.put("Q",48);
-        map.put("R",28);
-        map.put("S",17);
-        map.put("T",94);
-        map.put("U",40);
-        map.put("V",67);
-        map.put("W",87);
-        map.put("X",54);
-        map.put("Y",11);
-        map.put("Z",33);
-        map.put("1",52);
-        map.put("2",68);
-        map.put("3",32);
-        map.put("4",95);
-        map.put("5",96);
-        map.put("6",45);
-        map.put("7",56);
-        map.put("8",14);
-        map.put("9",18);
-        map.put("0",29);
-        map.put("|",19);
+        map.put("A",116);
+        map.put("B",404);
+        map.put("C",754);
+        map.put("D",891);
+        map.put("E",534);
+        map.put("F",713);
+        map.put("G",482);
+        map.put("H",996);
+        map.put("I",309);
+        map.put("J",414);
+        map.put("K",745);
+        map.put("L",296);
+        map.put("M",824);
+        map.put("N",678);
+        map.put("O",732);
+        map.put("P",541);
+        map.put("Q",563);
+        map.put("R",527);
+        map.put("S",926);
+        map.put("T",830);
+        map.put("U",755);
+        map.put("V",130);
+        map.put("W",508);
+        map.put("X",153);
+        map.put("Y",627);
+        map.put("Z",235);
+        map.put("a",538);
+        map.put("b",322);
+        map.put("c",184);
+        map.put("d",969);
+        map.put("e",276);
+        map.put("f",740);
+        map.put("g",120);
+        map.put("h",436);
+        map.put("i",136);
+        map.put("j",394);
+        map.put("k",938);
+        map.put("l",277);
+        map.put("m",483);
+        map.put("n",593);
+        map.put("o",942);
+        map.put("p",388);
+        map.put("q",627);
+        map.put("r",989);
+        map.put("s",604);
+        map.put("t",773);
+        map.put("u",403);
+        map.put("v",357);
+        map.put("w",195);
+        map.put("x",226);
+        map.put("y",164);
+        map.put("z",271);
+        map.put("1",562);
+        map.put("2",520);
+        map.put("3",905);
+        map.put("4",258);
+        map.put("5",650);
+        map.put("6",349);
+        map.put("7",444);
+        map.put("8",471);
+        map.put("9",962);
+        map.put("0",550);
+        map.put("~",812);
+        map.put("!",595);
+        map.put("@",346);
+        map.put("#",895);
+        map.put("$",925);
+        map.put("%",690);
+        map.put("^",585);
+        map.put("&",875);
+        map.put("*",984);
+        map.put("(",606);
+        map.put(")",502);
+        map.put("-",258);
+        map.put("_",984);
+        map.put("=",183);
+        map.put("+",835);
+        map.put("{",624);
+        map.put("}",838);
+        map.put("[",862);
+        map.put("]",962);
+        map.put("|",813);
+        map.put(";",474);
+        map.put(":",778);
+        map.put("'",762);
+        map.put("\"",215);
+        map.put(",",113);
+        map.put(".",232);
+        map.put("<",341);
+        map.put(">",560);
+        map.put("/",951);
+        map.put("?",922);
+
         if(encrypt)
             for(int i = 0; i < line.length(); i++)
                 answer += map.get(line.substring(i,i+1));
         else
-            for(int i = 0; i < line.length(); i+=2)
+            for(int i = 0; i < line.length(); i+=3)
                 for(String key : map.keySet())
-                    if(map.get(key).equals(Integer.parseInt(line.substring(i,i+2))))
+                    if(map.get(key).equals(Integer.parseInt(line.substring(i,i+3))))
                         answer += key;
         
         return answer;

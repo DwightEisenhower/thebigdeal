@@ -1,26 +1,28 @@
 #BlueJ class context
 comment0.target=Encryptor
-comment0.text=\n\ Encryption\n\ @Author\:\ Danylo\ Mirin\n\ @Copyright\ 2018\n\ @Date\:\ 27\ February\ 2018\n\ @Version\:\ 5\n\ @Error\ Codes\:\n\ 1\ \=\ no\ writing\ or\ reading\ access\n\ 2\ \=\ IOException\ -\ writing\ fail\n\ 3\ \=\ File\ Not\ Found\ -\ file(s)\ were\ removed\ midway\ through\ operation\n\ 4\ \=\ IOException\ -\ reading\ fail\n\ 5\ \=\ when\ message\ was\ copied,\ it\ was\ not\ copied\ in\ full.\ Decryption\n\ impossible.\n\ \n\ @Notes\:\n\ If\ you\ and\ your\ partner\ have\ different\ keys,\ one\ of\ you\ needs\ to\ send\ his\ to\ the\ other.\n\ The\ conversion\ file\ wouldn't\ normally\ be\ safe\ -\ intercept\ it\ and\ you're\ done.\ Therefore,\n\ a\ second,\ common\ algorithm\ encrypts\ the\ conversion\ file\ so\ that\ it\ is\ unreadable\ to\ humans\n\ and\ by\ the\ time\ a\ machine\ finds\ a\ decryption\ for\ it,\ your\ message\ will\ already\ go\ through\n\ and\ encryption\ can\ be\ changed\ again\n\ If\ the\ conversion\ file\ is\ empty/nonexistent\ or\ after\ initialisation\ it\ is\ found\ that\ not\ all\n\ characters\ are\ present,\ it\ will\ be\ rewritten.\ This\ WILL\ screw\ with\ decryption\ on\ the\ other\n\ end\!\ You\ will\ have\ to\ pass\ on\ the\ key\ to\ your\ partner\ or\ decryption\ will\ fail\ and\ give\ you\ \n\ gibberish\ answers.\ (encryption\ stored\ in\ l2n.enc)\n
+comment0.text=\r\n\ Encryption\r\n\ @Author\:\ Danylo\ Mirin\r\n\ @Copyright\ 2018\r\n\ @Date\:\ 27\ February\ 2018\r\n\ @Version\:\ 5\r\n\ @Error\ Codes\:\r\n\ 1\ \=\ no\ writing\ or\ reading\ access\r\n\ 2\ \=\ IOException\ -\ writing\ fail\r\n\ 3\ \=\ File\ Not\ Found\ -\ file(s)\ were\ removed\ midway\ through\ operation\r\n\ 4\ \=\ IOException\ -\ reading\ fail\r\n\ 5\ \=\ when\ message\ was\ copied,\ it\ was\ not\ copied\ in\ full.\ Decryption\r\n\ impossible.\r\n\ \r\n\ @Notes\:\r\n\ If\ you\ and\ your\ partner\ have\ different\ keys,\ one\ of\ you\ needs\ to\ send\ his\ to\ the\ other.\r\n\ The\ conversion\ file\ wouldn't\ normally\ be\ safe\ -\ intercept\ it\ and\ you're\ done.\ Therefore,\r\n\ a\ second,\ common\ algorithm\ encrypts\ the\ conversion\ file\ so\ that\ it\ is\ unreadable\ to\ humans\r\n\ and\ by\ the\ time\ a\ machine\ finds\ a\ decryption\ for\ it,\ your\ message\ will\ already\ go\ through\r\n\ and\ encryption\ can\ be\ changed\ again\r\n\ If\ the\ conversion\ file\ is\ empty/nonexistent\ or\ after\ initialisation\ it\ is\ found\ that\ not\ all\r\n\ characters\ are\ present,\ it\ will\ be\ rewritten.\ This\ WILL\ screw\ with\ decryption\ on\ the\ other\r\n\ end\!\ You\ will\ have\ to\ pass\ on\ the\ key\ to\ your\ partner\ or\ decryption\ will\ fail\ and\ give\ you\ \r\n\ gibberish\ answers.\ (encryption\ stored\ in\ l2n.enc)\r\n
 comment1.params=
 comment1.target=Encryptor()
-comment10.params=
-comment10.target=boolean\ empty()
+comment10.params=line\ encrypt
+comment10.target=java.lang.String\ ln(java.lang.String,\ boolean)
+comment10.text=This\ method\ is\ gonna\ be\ ugly\ because\ I\ do\ not\ want\ to\ rely\ on\ external\ files
+comment11.params=
+comment11.target=boolean\ empty()
 comment2.params=alphabet
 comment2.target=Encryptor(java.util.HashMap)
-comment3.params=message
-comment3.target=java.lang.String\ encrypt(java.lang.String)
-comment3.text=\#Encryption
-comment4.params=
-comment4.target=void\ generateNewValues()
+comment3.params=
+comment3.target=void\ main()
+comment4.params=message
+comment4.target=java.lang.String\ encrypt(java.lang.String)
+comment4.text=\#Encryption
 comment5.params=
-comment5.target=java.lang.String\ keyGen()
-comment6.params=scrambled
-comment6.target=java.lang.String\ decrypt(java.lang.String)
-comment7.params=
-comment7.target=void\ readFromFile()
+comment5.target=void\ generateNewValues()
+comment6.params=
+comment6.target=java.lang.String\ keyGen()
+comment7.params=scrambled
+comment7.target=java.lang.String\ decrypt(java.lang.String)
 comment8.params=
-comment8.target=void\ writeToFile()
-comment9.params=line\ encrypt
-comment9.target=java.lang.String\ ln(java.lang.String,\ boolean)
-comment9.text=This\ method\ is\ gonna\ be\ ugly\ because\ I\ do\ not\ want\ to\ rely\ on\ external\ files
-numComments=11
+comment8.target=void\ readFromFile()
+comment9.params=
+comment9.target=void\ writeToFile()
+numComments=12
