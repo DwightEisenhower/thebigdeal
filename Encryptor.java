@@ -136,7 +136,7 @@ public class Encryptor {
         reader = new BufferedReader(new FileReader(convFile));
         String line;
         while( (line = reader.readLine()) != null) {
-            //line = ln(line,false);
+            line = ln(line,false);
             alphabet.put(line.substring(0,1), line.substring(2));
         }
         reader.close();
@@ -144,15 +144,14 @@ public class Encryptor {
     
     private void writeToFile() throws IOException {
         writer = new BufferedWriter(new FileWriter(convFile));
-        for(String k : alphabet.keySet()) {
+        for(String k : alphabet.keySet()) {//This segment works flawlessly
             String s = k+"|"+alphabet.get(k);
-            System.out.println(s);
-            writer.write(s+"\n");
+            writer.write(ln(s,true)+"\n");
         }
         writer.flush();
         writer.close();
     }
-    /**This method is gonna be ugly because I do not want to rely on external files*/
+    /**This method is gonna be ugly because I do not want to rely on external files that can be cracked*/
     public static String ln(String line, boolean encrypt) {
         String answer = "";
         HashMap<String, Integer> map = new HashMap<>();
@@ -241,7 +240,7 @@ public class Encryptor {
         map.put(";",474);
         map.put(":",778);
         map.put("'",762);
-        map.put("\"",215);
+        map.put("\"",215);//had to escape the "
         map.put(",",113);
         map.put(".",232);
         map.put("<",341);
